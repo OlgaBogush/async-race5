@@ -1,12 +1,12 @@
 export default function createWinners() {
   const main = document.createElement("main")
-  main.classList.add("winners")
+  main.classList.add("winners-page", "hide")
 
   const container = document.createElement("div")
   container.classList.add("container")
-  container.textContent = "Winners"
+  container.textContent = "Winners bla bla bla"
 
   main.append(container)
 
-  return main
+  document.body.append(main)
 }

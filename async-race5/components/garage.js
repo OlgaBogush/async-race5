@@ -1,12 +1,12 @@
 export default function createGarage() {
   const main = document.createElement("main")
-  main.classList.add("garage")
+  main.classList.add("garage-page")
 
   const container = document.createElement("div")
   container.classList.add("container")
-  container.textContent = "Garage"
+  container.textContent = "Garage ppppppp"
 
   main.append(container)
 
-  return main
+  document.body.append(main)
 }

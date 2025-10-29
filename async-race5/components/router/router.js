@@ -1,10 +1,10 @@
-import createGarage from "../page/garage.js"
-import createWinners from "../page/winners.js"
+import showGarage from "../helpers/showGarage.js"
+import showWinners from "../helpers/showWinners.js"
 
 export default function router() {
   const routes = [
-    { hash: "", view: createGarage },
-    { hash: "#winners", view: createWinners },
+    { hash: "", view: showGarage },
+    { hash: "#winners", view: showWinners },
   ]
 
   const potentialMatches = routes.map((item) => {
@@ -23,7 +23,5 @@ export default function router() {
     }
   }
 
-  const app = document.getElementById("app")
-  app.innerHTML = ""
-  app.append(match.item.view())
+  match.item.view()
 }

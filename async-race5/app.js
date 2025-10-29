@@ -1,10 +1,12 @@
-import app from "./components/app.js"
-import createFooter from "./components/page/footer.js"
-import createHeader from "./components/page/header.js"
+import createFooter from "./components/footer.js"
+import createGarage from "./components/garage.js"
+import createHeader from "./components/header.js"
+import createWinners from "./components/winners.js"
 import router from "./components/router/router.js"
 
 createHeader()
-app()
+createGarage()
+createWinners()
 createFooter()
 
 

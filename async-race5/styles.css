@@ -37,10 +37,16 @@ header {
   color: whitesmoke;
 }
 
-
-main {
+.winners-page, .garage-page {
   height: 85vh;
 }
+.winners-page.hide {
+  display: none;
+}
+.garage-page.hide {
+  display: none;
+}
+
 
 /* controls */
 .controls-buttons {
