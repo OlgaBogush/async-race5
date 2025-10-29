@@ -10,6 +10,7 @@ createWinners()
 createFooter()
 
 
+// SPA
 window.addEventListener("popstate", router)
 
 document.addEventListener("DOMContentLoaded", () => {

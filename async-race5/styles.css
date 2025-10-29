@@ -8,7 +8,12 @@
   width: 1220px;
   margin: 0 auto;
 }
-
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+}
 /* header */
 header {
   background-color: #616e74;
@@ -36,6 +41,12 @@ header {
 .to-winners-button:hover {
   color: whitesmoke;
 }
+.to-garage-button.active {
+  color: whitesmoke;
+}
+.to-winners-button.active {
+  color: whitesmoke;
+}
 
 .winners-page, .garage-page {
   height: 85vh;
@@ -61,7 +72,7 @@ header {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin: 20px 0;
+  margin: 10px 0 20px 0;
 }
 .create-form, .update-form {
   display: flex;
@@ -113,7 +124,7 @@ circle, path {
   height: 15px;
   top: 0;
   right: 0;
-  background-image: url("./images/fire.png");
+  background-image: url("./components/images/fire.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -125,7 +136,7 @@ circle, path {
   bottom: 5px;
   width: 25px;
   height: 25px;
-  background-image: url("./images/finish.png");
+  background-image: url("./components/images/finish.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;

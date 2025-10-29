@@ -8,7 +8,7 @@ export default function createHeader() {
   headerContainer.classList.add("header-container")
 
   const toGarageButton = document.createElement("a")
-  toGarageButton.href = ""
+  toGarageButton.href = "#garage"
   toGarageButton.classList.add("to-garage-button")
   toGarageButton.dataset.link = ""
   toGarageButton.innerText = "Garage"
