@@ -3,11 +3,14 @@ import createGarage from "./components/garage.js"
 import createHeader from "./components/header.js"
 import createWinners from "./components/winners.js"
 import router from "./components/router/router.js"
+import modifyCar from "./components/utils/listeners/modifyCar.js"
 
 createHeader()
 createGarage()
 createWinners()
 createFooter()
+
+// modifyCar()
 
 
 // SPA

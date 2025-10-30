@@ -1,5 +1,7 @@
 import createCars from "./cars/createCars.js"
-import { getCars } from "./utils/async.js"
+import drawCar from "./cars/drawCar.js"
+import totalCarsOnPage from "./helpers/totalCarsOnPage.js"
+import { createCar, getCars } from "./utils/async.js"
 
 const cars = await getCars()
 
@@ -106,18 +108,18 @@ export default function createGarage() {
     const carsWrapper = createCars(cars)
     wrapper.append(carsWrapper)
     container.append(wrapper)
+
+
+    // listeners
+    formCreate.addEventListener("submit", async (e) => {
+      e.preventDefault()
+      const car = {
+        name: inputTextCreate.value,
+        color: inputColorCreate.value,
+      }
+      const { name, color, id } = await createCar(car)
+      const newCar = drawCar(name, color, id)
+      wrapper.append(newCar)
+      totalCarsOnPage()
+    })
 }
-
-
-// export default function createGarage() {
-//   const main = document.createElement("main")
-//   main.classList.add("garage-page")
-
-//   const container = document.createElement("div")
-//   container.classList.add("container")
-//   container.textContent = "garage garage"
-
-//   main.append(container)
-
-//   document.body.append(main)
-// }

@@ -12,45 +12,45 @@ export async function getCars() {
   }
 }
 
-// export async function getCar(id) {
-//   try {
-//     const response = await fetch(`${BASE_URL}/garage/${id}`)
-//     const res = await response.json()
-//     // console.log(res)
-//     return res
-//   } catch (err) {
-//     throw new Error("NOT FOUND")
-//   }
-// }
+export async function getCar(id) {
+  try {
+    const response = await fetch(`${BASE_URL}/garage/${id}`)
+    const res = await response.json()
+    // console.log(res)
+    return res
+  } catch (err) {
+    throw new Error("NOT FOUND")
+  }
+}
 
-// export async function deleteCar(id) {
-//   try {
-//     const response = await fetch(`${BASE_URL}/garage/${id}`, {
-//       method: "DELETE",
-//     })
-//     const res = await response.json()
-//     return res
-//   } catch (err) {
-//     throw new Error("NOT FOUND")
-//   }
-// }
+export async function deleteCar(id) {
+  try {
+    const response = await fetch(`${BASE_URL}/garage/${id}`, {
+      method: "DELETE",
+    })
+    const res = await response.json()
+    return res
+  } catch (err) {
+    throw new Error("NOT FOUND")
+  }
+}
 
-// export async function createCar(car) {
-//   try {
-//     const response = await fetch(`${BASE_URL}/garage/`, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(car),
-//     })
-//     const res = await response.json()
-//     console.log("create", res)
-//     return res
-//   } catch (err) {
-//     throw new Error("Error")
-//   }
-// }
+export async function createCar(car) {
+  try {
+    const response = await fetch(`${BASE_URL}/garage/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(car),
+    })
+    const res = await response.json()
+    console.log("create", res)
+    return res
+  } catch (err) {
+    throw new Error("Error")
+  }
+}
 
 // export async function updateCar(id, updateParams) {
 //   try {
