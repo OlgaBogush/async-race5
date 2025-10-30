@@ -5,4 +5,8 @@ export default function showWinners() {
     winnersPage.classList.remove("hide")
     garagePage.classList.add("hide")
   }
+  // if (winnersPage.hidden) {
+  //   winnersPage.hidden = false
+  //   garagePage.hidden = true
+  // }
 }

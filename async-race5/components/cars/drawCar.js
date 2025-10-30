@@ -1,4 +1,4 @@
-import { deleteCar, getCar, updateCar } from "../utils/async.js"
+import { deleteCar, driveEngine, getCar, startEngine, stopEngine } from "../utils/async.js"
 import totalCarsOnPage from "../helpers/totalCarsOnPage.js"
 
 export default function drawCar(name, color, id) {
@@ -16,18 +16,18 @@ export default function drawCar(name, color, id) {
   carContainer.classList.add("car-container")
 
   const car = document.createElement("div")
-    car.classList.add("car")
-    car.id = id
-    car.dataset.name = name
+  car.classList.add("car")
+  car.id = id
+  car.dataset.name = name
 
-    const fire = document.createElement("div")
-    fire.classList.add("fire")
-    fire.id = `fire-${id}`
+  const fire = document.createElement("div")
+  fire.classList.add("fire")
+  fire.id = `fire-${id}`
 
-    const flag = document.createElement("div")
-    flag.classList.add("flag")
+  const flag = document.createElement("div")
+  flag.classList.add("flag")
 
-    const svgCar = `
+  const svgCar = `
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
     viewBox="0 0 256 256" xml:space="preserve">
     <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;"
@@ -84,7 +84,6 @@ export default function drawCar(name, color, id) {
   carItem.append(carContainer)
   carItem.append(carButtons)
 
-
   // listeners
   smallButtonRemove.addEventListener("click", async (e) => {
     e.preventDefault()
@@ -106,6 +105,33 @@ export default function drawCar(name, color, id) {
     inputColorUpdate.value = currentParams.color
     inputTextUpdate.dataset.selectedCarId = carId
   })
-  
+
+  smallButtonRace.addEventListener("click", async (e) => {
+    e.preventDefault()
+    carId = parseInt(e.target.id.split("-").at(-1))
+    const { id, res } = await startEngine(carId)
+    const time = (res.distance / res.velocity / 1000).toFixed(2)
+    const carElement = document.getElementById(carId)
+    carElement.style.animation = "move"
+    carElement.style.animationDuration = `${time}s`
+    carElement.style.animationTimingFunction = "linear"
+    carElement.style.animationFillMode = "forwards"
+
+    await driveEngine(carId)
+      .then((data) => data)
+      .catch((err) => {
+        console.log(err)
+      })
+  })
+
+  smallButtonStop.addEventListener("click", async (e) => {
+    e.preventDefault()
+    carId = parseInt(e.target.id.split("-").at(-1))
+    const carElement = document.getElementById(carId)
+    carElement.style.animation = ""
+    fire.style.display = "none"
+    await stopEngine(carId)
+  })
+
   return carItem
 }

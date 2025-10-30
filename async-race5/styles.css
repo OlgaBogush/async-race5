@@ -51,11 +51,16 @@ header {
 .winners-page, .garage-page {
   height: 85vh;
 }
+.winners-page {
+  margin-top: -80vh;
+}
 .winners-page.hide {
-  display: none;
+  /* display: none; */
+  visibility: hidden;
 }
 .garage-page.hide {
-  display: none;
+  /* display: none; */
+  visibility: hidden;
 }
 
 
@@ -102,6 +107,7 @@ circle, path {
 }
 .car-title {
   padding-left: 10px;
+  height: 20px;
 }
 .car-container {
   position: relative;
