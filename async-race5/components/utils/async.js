@@ -52,22 +52,22 @@ export async function createCar(car) {
   }
 }
 
-// export async function updateCar(id, updateParams) {
-//   try {
-//     const response = await fetch(`${BASE_URL}/garage/${id}`, {
-//       method: "PUT",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(updateParams),
-//     })
-//     const res = await response.json()
-//     console.log("update", res)
-//     return res
-//   } catch (err) {
-//     throw new Error("NOT FOUND")
-//   }
-// }
+export async function updateCar(id, updateParams) {
+  try {
+    const response = await fetch(`${BASE_URL}/garage/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updateParams),
+    })
+    const res = await response.json()
+    console.log("update", res)
+    return res
+  } catch (err) {
+    throw new Error("NOT FOUND")
+  }
+}
 
 // export async function startEngine(id) {
 //   try {

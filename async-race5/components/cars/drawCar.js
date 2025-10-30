@@ -1,4 +1,4 @@
-import { deleteCar, getCar } from "../utils/async.js"
+import { deleteCar, getCar, updateCar } from "../utils/async.js"
 import totalCarsOnPage from "../helpers/totalCarsOnPage.js"
 
 export default function drawCar(name, color, id) {
@@ -99,13 +99,13 @@ export default function drawCar(name, color, id) {
   smallButtonSelect.addEventListener("click", async (e) => {
     e.preventDefault()
     carId = parseInt(e.target.id.split("-").at(-1))
-    console.log("select", carId)
     const currentParams = await getCar(carId)
     const inputTextUpdate = document.querySelector(".input-text-update")
     const inputColorUpdate = document.querySelector(".input-color-update")
     inputTextUpdate.value = currentParams.name
     inputColorUpdate.value = currentParams.color
+    inputTextUpdate.dataset.selectedCarId = carId
   })
-
+  
   return carItem
 }

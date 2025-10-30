@@ -61,34 +61,34 @@ export default function modifyCar() {
   })
 
   // create car------------------------------------------------------------
-  // const inputTextCreate = document.querySelector(".input-text-create")
-  // const inputColorCreate = document.querySelector(".input-color-create")
-  // const createForm = document.querySelector(".create-form")
+  const inputTextCreate = document.querySelector(".input-text-create")
+  const inputColorCreate = document.querySelector(".input-color-create")
+  const createForm = document.querySelector(".create-form")
 
-  // createForm.addEventListener("submit", async (e) => {
-  //   e.preventDefault()
-  //   const car = {
-  //     name: inputTextCreate.value,
-  //     color: inputColorCreate.value,
-  //   }
-  //   const { name, color, id } = await createCar(car)
-  //   const newCar = drawCar(name, color, id)
-  //   const wrapper = document.querySelector(".wrapper")
-  //   wrapper.append(newCar)
-  //   totalCarsOnPage()
-  // })
+  createForm.addEventListener("submit", async (e) => {
+    e.preventDefault()
+    const car = {
+      name: inputTextCreate.value,
+      color: inputColorCreate.value,
+    }
+    const { name, color, id } = await createCar(car)
+    const newCar = drawCar(name, color, id)
+    const wrapper = document.querySelector(".wrapper")
+    wrapper.append(newCar)
+    totalCarsOnPage()
+  })
 
   // update car----------------------------------------------------------------------------------
-  // const inputTextUpdate = document.querySelector(".input-text-update")
-  // const inputColorUpdate = document.querySelector(".input-color-update")
-  // const updateForm = document.querySelector(".update-form")
+  const inputTextUpdate = document.querySelector(".input-text-update")
+  const inputColorUpdate = document.querySelector(".input-color-update")
+  const updateForm = document.querySelector(".update-form")
 
-  // updateForm.addEventListener("submit", async (e) => {
-  //   e.preventDefault()
-  //   const updateParams = {
-  //     name: inputTextUpdate.value,
-  //     color: inputColorUpdate.value,
-  //   }
-  //   await updateCar(carId, updateParams)
-  // })
+  updateForm.addEventListener("submit", async (e) => {
+    e.preventDefault()
+    const updateParams = {
+      name: inputTextUpdate.value,
+      color: inputColorUpdate.value,
+    }
+    await updateCar(carId, updateParams)
+  })
 }
