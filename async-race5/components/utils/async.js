@@ -137,3 +137,23 @@ export async function getWinners() {
     throw new Error("Error for getWinners")
   }
 }
+
+export async function getSortedTimeWinners() {
+  try {
+    const response = await fetch(`${BASE_URL}/winners?_sort=time`)
+    const res = await response.json()
+    return res
+  } catch (err) {
+    throw new Error("Error for getSortedTimeWinners")
+  }
+}
+
+export async function getSortedWinsWinners() {
+  try {
+    const response = await fetch(`${BASE_URL}/winners?_sort=wins`)
+    const res = await response.json()
+    return res
+  } catch (err) {
+    throw new Error("Error for getSortedWinsWinners")
+  }
+}

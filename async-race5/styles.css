@@ -51,9 +51,9 @@ header {
 .winners-page, .garage-page {
   height: 85vh;
 }
-.winners-page {
+/* .winners-page {
   margin-top: -80vh;
-}
+} */
 .winners-page.hide {
   visibility: hidden;
 }
@@ -237,6 +237,7 @@ table {
 th, td {
   border: 1px solid black;
   padding: 4px;
+  font-size: .9rem;
 }
 th {
   width: 150px;
@@ -244,10 +245,78 @@ th {
 }
 td {
   text-align: center;
-  height: 80px;
+  height: 50px;
 }
 .row-car-car svg {
-  width: 55px;
-  height: 55px;
+  width: 40px;
+  height: 40px;
+}
+.title-time, .title-wins {
+  position: relative;
+  cursor: pointer;
+}
+
+/* arrows */
+.title-time:before {
+  position: absolute;
+  content: "";
+  width: 7px;
+  height: 2px;
+  background-color: #616e74;
+  top: 50%;
+  right: 12px;
+  transform: rotate(-45deg);
+
+  transition: background-color .2s linear;
+}
+.title-time:after {
+  position: absolute;
+  content: "";
+  width: 7px;
+  height: 2px;
+  background-color: #616e74;
+  top: 50%;
+  right: 16px;
+  transform: rotate(45deg);
+
+  transition: background-color .2s linear;
+}
+.title-time:hover:before {
+  background-color: black;
+}
+.title-time:hover:after {
+  background-color: black;
+}
+
+
+.title-wins:before {
+  position: absolute;
+  content: "";
+  width: 7px;
+  height: 2px;
+  background-color: #616e74;
+  top: 50%;
+  right: 12px;
+  transform: rotate(-45deg);
+
+  transition: background-color .2s linear;
+}
+.title-wins:after {
+  position: absolute;
+  content: "";
+  width: 7px;
+  height: 2px;
+  background-color: #616e74;
+  top: 50%;
+  right: 16px;
+  transform: rotate(45deg);
+
+  transition: background-color .2s linear;
+}
+.title-wins:hover:before {
+  background-color: black;
+}
+.title-wins:hover:after {
+  background-color: black;
 }
 
