@@ -1,7 +1,7 @@
 import createCars from "./cars/createCars.js"
 import drawCar from "./cars/drawCar.js"
 import totalCarsOnPage from "./helpers/totalCarsOnPage.js"
-import { createCar, getCars, updateCar } from "./utils/async.js"
+import { createCar, getCars, startEngine, stopEngine, updateCar } from "./utils/async.js"
 
 const cars = await getCars()
 
@@ -23,6 +23,7 @@ export default function createGarage() {
   inputTextCreate.setAttribute("type", "text")
   inputTextCreate.setAttribute("name", "text")
   inputTextCreate.classList.add("input-text-create")
+  inputTextCreate.required = true
 
   const inputColorCreate = document.createElement("input")
   inputColorCreate.setAttribute("type", "color")
@@ -68,6 +69,7 @@ export default function createGarage() {
   const buttonReset = document.createElement("button")
   buttonReset.classList.add("button-reset")
   buttonReset.innerText = "Reset"
+  buttonReset.disabled = true
 
   const buttonGenerate = document.createElement("button")
   buttonGenerate.classList.add("button-generate")
@@ -160,4 +162,6 @@ export default function createGarage() {
       </g>`
     }
   })
+
+
 }

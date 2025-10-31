@@ -60,6 +60,7 @@ export default function drawCar(name, color, id) {
   smallButtonStop.classList.add("small-button-stop")
   smallButtonStop.textContent = "B"
   smallButtonStop.id = `small-button-stop-${id}`
+  smallButtonStop.disabled = true
 
   const smallButtonSelect = document.createElement("button")
   smallButtonSelect.classList.add("small-button")
@@ -108,6 +109,9 @@ export default function drawCar(name, color, id) {
 
   smallButtonRace.addEventListener("click", async (e) => {
     e.preventDefault()
+    smallButtonRace.disabled = true
+    smallButtonStop.disabled = false
+
     carId = parseInt(e.target.id.split("-").at(-1))
     const { id, res } = await startEngine(carId)
     const time = (res.distance / res.velocity / 1000).toFixed(2)
@@ -126,6 +130,9 @@ export default function drawCar(name, color, id) {
 
   smallButtonStop.addEventListener("click", async (e) => {
     e.preventDefault()
+    smallButtonRace.disabled = false
+    smallButtonStop.disabled = true
+
     carId = parseInt(e.target.id.split("-").at(-1))
     const carElement = document.getElementById(carId)
     carElement.style.animation = ""

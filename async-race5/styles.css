@@ -72,6 +72,14 @@ header {
 .button-race, .button-reset, .button-generate {
   padding: 5px 10px;
   cursor: pointer;
+
+  transition: all .2s linear;
+}
+.button-race:disabled {
+  cursor: default;
+}
+.button-reset:disabled {
+  cursor: default;
 }
 .controls {
   display: flex;
@@ -180,6 +188,8 @@ circle, path {
  padding: 2px 5px;
   margin-top: 5px;
   cursor: pointer;
+
+  transition: all .2s linear;
 }
 
 
