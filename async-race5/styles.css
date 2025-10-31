@@ -55,11 +55,9 @@ header {
   margin-top: -80vh;
 }
 .winners-page.hide {
-  /* display: none; */
   visibility: hidden;
 }
 .garage-page.hide {
-  /* display: none; */
   visibility: hidden;
 }
 
@@ -72,8 +70,6 @@ header {
 .button-race, .button-reset, .button-generate {
   padding: 5px 10px;
   cursor: pointer;
-
-  transition: all .2s linear;
 }
 .button-race:disabled {
   cursor: default;
@@ -188,8 +184,6 @@ circle, path {
  padding: 2px 5px;
   margin-top: 5px;
   cursor: pointer;
-
-  transition: all .2s linear;
 }
 
 
@@ -233,5 +227,23 @@ footer {
   color: antiquewhite;
   font-size: 1.5rem;
   font-weight: 300;
+}
+
+
+/* winners */
+table {
+  border-collapse: collapse;
+}
+th, td {
+  border: 1px solid black;
+  padding: 4px;
+}
+th {
+  width: 150px;
+  height: 50px;
+}
+td {
+  text-align: center;
+  height: 70px;
 }
 

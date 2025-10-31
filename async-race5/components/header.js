@@ -12,6 +12,7 @@ export default function createHeader() {
   toGarageButton.classList.add("to-garage-button")
   toGarageButton.dataset.link = ""
   toGarageButton.innerText = "Garage"
+  toGarageButton.classList.add("active")
 
   const toWinnersButton = document.createElement("a")
   toWinnersButton.href = "#winners"
