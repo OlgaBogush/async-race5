@@ -126,3 +126,14 @@ export async function stopEngine(id) {
     throw new Error("NOT FOUND")
   }
 }
+
+// winners
+export async function getWinners() {
+  try {
+    const response = await fetch(`${BASE_URL}/winners`)
+    const res = await response.json()
+    return res
+  } catch (err) {
+    throw new Error("Error for getWinners")
+  }
+}

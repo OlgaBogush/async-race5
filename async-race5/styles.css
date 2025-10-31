@@ -244,6 +244,10 @@ th {
 }
 td {
   text-align: center;
-  height: 70px;
+  height: 80px;
+}
+.row-car-car svg {
+  width: 55px;
+  height: 55px;
 }
 
