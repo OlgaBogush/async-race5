@@ -9,7 +9,8 @@ export default function drawWinners(array) {
 
     // rowCar
     const rowCar = document.createElement("tr")
-    rowCar.classList.add("car-item")
+    rowCar.classList.add("row-car")
+    rowCar.dataset.winnerId = winnerCar.id
 
     const rowCarNumber = document.createElement("td")
     rowCarNumber.textContent = index + 1

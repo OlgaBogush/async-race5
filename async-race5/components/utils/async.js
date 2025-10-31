@@ -1,6 +1,5 @@
 import stopAnimation from "../helpers/stopAnimation.js"
 
-
 const BASE_URL = "http://127.0.0.1:3000"
 
 export async function getCars() {
@@ -46,7 +45,7 @@ export async function createCar(car) {
       body: JSON.stringify(car),
     })
     const res = await response.json()
-    console.log("create", res)
+    console.log("create car", res)
     return res
   } catch (err) {
     throw new Error("Error")
@@ -63,7 +62,7 @@ export async function updateCar(id, updateParams) {
       body: JSON.stringify(updateParams),
     })
     const res = await response.json()
-    console.log("update", res)
+    console.log("update car", res)
     return res
   } catch (err) {
     throw new Error("NOT FOUND")
@@ -134,7 +133,17 @@ export async function getWinners() {
     const res = await response.json()
     return res
   } catch (err) {
-    throw new Error("Error for getWinners")
+    throw new Error("Error from getWinners")
+  }
+}
+
+export async function getWinner(id) {
+  try {
+    const response = await fetch(`${BASE_URL}/winners/${id}`)
+    const res = await response.json()
+    return res
+  } catch (err) {
+    throw new Error("NOT FOUND")
   }
 }
 
@@ -144,7 +153,7 @@ export async function getSortedTimeWinners() {
     const res = await response.json()
     return res
   } catch (err) {
-    throw new Error("Error for getSortedTimeWinners")
+    throw new Error("Error from getSortedTimeWinners")
   }
 }
 
@@ -154,6 +163,43 @@ export async function getSortedWinsWinners() {
     const res = await response.json()
     return res
   } catch (err) {
-    throw new Error("Error for getSortedWinsWinners")
+    throw new Error("Error from getSortedWinsWinners")
+  }
+}
+
+export async function updateWinner(id, updateParams) {
+  try {
+    const response = await fetch(`${BASE_URL}/winners/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updateParams),
+    })
+    const res = await response.json()
+    console.log("update winner", res)
+    return res
+  } catch (err) {
+    throw new Error("NOT FOUND")
+  }
+}
+
+export async function createWinner(winner) {
+  try {
+    const response = await fetch(`${BASE_URL}/winners/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(winner),
+    })
+    if (response.status == 500) {
+      console.log("DUPLICATE ID")
+    }
+    const res = await response.json()
+    console.log("create winner", res)
+    return res
+  } catch (err) {
+    throw new Error("duplicate id")
   }
 }

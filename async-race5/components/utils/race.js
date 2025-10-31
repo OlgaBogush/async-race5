@@ -1,4 +1,12 @@
-import { driveEngine, getCars, startEngine, stopEngine } from "./async.js"
+import {
+  createWinner,
+  driveEngine,
+  getCars,
+  getWinner,
+  startEngine,
+  stopEngine,
+  updateWinner,
+} from "./async.js"
 
 export default async function race() {
   const buttonRace = document.querySelector(".button-race")
@@ -50,6 +58,32 @@ export default async function race() {
       modal.classList.add("show")
       document.body.style.overflow = "hidden"
       console.log("first", first)
+
+      const createWinnerParams = {
+        id: first.id,
+        wins: 1,
+        time: Number(time),
+      }
+
+      const winnersCollection = document.querySelectorAll(".row-car")
+
+      const isExists = Array.from(winnersCollection).find(
+        (item) => Number(item.dataset.winnerId) === first.id
+      )
+
+      if (!!isExists) {
+        const oldWinner = await getWinner(first.id)
+
+        const updateWinnerParams = {
+          wins: oldWinner.wins + 1,
+          time: Math.min(oldWinner.time, Number(time)),
+        }
+
+        await updateWinner(first.id, updateWinnerParams)
+        
+      } else {
+        await createWinner(createWinnerParams)
+      }
 
       // hide modal
       modal.addEventListener("click", () => {
