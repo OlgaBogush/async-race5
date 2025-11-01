@@ -1,10 +1,14 @@
 import drawWinners from "./helpers/drawWinners.js"
 import { getSortedTimeWinners, getSortedWinsWinners, getWinners } from "./utils/async.js"
 
+export async function winners() {
+  const winnersArray = await getWinners()
+  drawWinners(winnersArray)
+}
+
 export default function createWinners() {
   const main = document.createElement("main")
-  // main.classList.add("winners-page", "hide")
-  main.classList.add("winners-page")
+  main.classList.add("winners-page", "hide")
 
   const container = document.createElement("div")
   container.classList.add("container")
@@ -38,10 +42,9 @@ export default function createWinners() {
   rowTitle.append(titleNumber, titleCar, titleName, titleWins, titleTime)
   thead.append(rowTitle)
 
-  async function winners() {
-    const winnersArray = await getWinners()
-    drawWinners(winnersArray)
-  }
+  
+
+
 
   titleTime.addEventListener("click", async () => {
     const sortedTimeWinners = await getSortedTimeWinners()

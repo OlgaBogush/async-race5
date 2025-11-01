@@ -51,9 +51,9 @@ header {
 .winners-page, .garage-page {
   height: 85vh;
 }
-/* .winners-page {
+.winners-page {
   margin-top: -80vh;
-} */
+}
 .winners-page.hide {
   visibility: hidden;
 }

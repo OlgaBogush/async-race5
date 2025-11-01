@@ -3,7 +3,7 @@ import showWinners from "../helpers/showWinners.js"
 
 export default function router() {
   const routes = [
-    { hash: "", view: showGarage },
+    // { hash: "", view: showGarage },
     { hash: "#garage", view: showGarage },
     { hash: "#winners", view: showWinners },
   ]

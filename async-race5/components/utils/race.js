@@ -1,3 +1,4 @@
+import { winners } from "../winners.js"
 import {
   createWinner,
   driveEngine,
@@ -80,9 +81,10 @@ export default async function race() {
         }
 
         await updateWinner(first.id, updateWinnerParams)
-        
+        await winners()
       } else {
         await createWinner(createWinnerParams)
+        await winners()
       }
 
       // hide modal
@@ -103,10 +105,12 @@ export default async function race() {
     console.log("array from reset", array)
     array.forEach(async (item) => {
       const carElement = document.getElementById(item)
-      const fire = document.getElementById(`fire-${item}`)
-      carElement.style.animation = ""
-      fire.style.display = "none"
-      await stopEngine(item)
+      if (carElement) {
+        const fire = document.getElementById(`fire-${item}`)
+        carElement.style.animation = ""
+        fire.style.display = "none"
+        await stopEngine(item)
+      }
     })
   })
 }

@@ -1,5 +1,7 @@
-import { deleteCar, driveEngine, getCar, startEngine, stopEngine } from "../utils/async.js"
+import { deleteCar, deleteWinner, driveEngine, getCar, getCars, startEngine, stopEngine } from "../utils/async.js"
 import totalCarsOnPage from "../helpers/totalCarsOnPage.js"
+import { winners } from "../winners.js"
+import createCars from "./createCars.js"
 
 export default function drawCar(name, color, id) {
   let carId
@@ -94,6 +96,12 @@ export default function drawCar(name, color, id) {
     let pane = e.target.closest(".car-item")
     pane.remove()
     totalCarsOnPage()
+
+    let paneWinner = document.querySelector(`[data-winner-id="${carId}"]`)
+    if (paneWinner) {
+      await deleteWinner(carId)
+      await winners()
+    }
   })
 
   smallButtonSelect.addEventListener("click", async (e) => {

@@ -1,7 +1,7 @@
 import createCars from "./cars/createCars.js"
 import drawCar from "./cars/drawCar.js"
 import totalCarsOnPage from "./helpers/totalCarsOnPage.js"
-import { createCar, getCars, startEngine, stopEngine, updateCar } from "./utils/async.js"
+import { createCar, getCars, updateCar } from "./utils/async.js"
 
 const cars = await getCars()
 

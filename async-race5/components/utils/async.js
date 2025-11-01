@@ -203,3 +203,17 @@ export async function createWinner(winner) {
     throw new Error("duplicate id")
   }
 }
+
+
+export async function deleteWinner(id) {
+  try {
+    const response = await fetch(`${BASE_URL}/winners/${id}`, {
+      method: "DELETE",
+    })
+    const res = await response.json()
+    return res
+  } catch (err) {
+    console.log("не найдено");
+    throw new Error("NOT FOUND")
+  }
+}
