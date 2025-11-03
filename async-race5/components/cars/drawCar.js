@@ -1,7 +1,6 @@
 import { deleteCar, deleteWinner, driveEngine, getCar, getCars, startEngine, stopEngine } from "../utils/async.js"
 import totalCarsOnPage from "../helpers/totalCarsOnPage.js"
 import { winners } from "../winners.js"
-import createCars from "./createCars.js"
 
 export default function drawCar(name, color, id) {
   let carId

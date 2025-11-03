@@ -1,5 +1,6 @@
 import createCars from "./cars/createCars.js"
 import drawCar from "./cars/drawCar.js"
+import { getRandomBrand, getRandomColor } from "./helpers/randomCar.js"
 import totalCarsOnPage from "./helpers/totalCarsOnPage.js"
 import { createCar, getCars, updateCar } from "./utils/async.js"
 
@@ -112,6 +113,7 @@ export default function createGarage() {
   wrapper.classList.add("wrapper")
 
   const carsWrapper = createCars(cars)
+  wrapper.innerHTML = ""
   wrapper.append(carsWrapper)
   container.append(wrapper)
 
@@ -135,7 +137,7 @@ export default function createGarage() {
       color: inputColorUpdate.value,
     }
     const selectedCar = document.querySelector("[data-selected-car-id]")
-    if(!selectedCar) {
+    if (!selectedCar) {
       return
     } else {
       const carId = selectedCar.dataset.selectedCarId
@@ -163,4 +165,20 @@ export default function createGarage() {
     }
   })
 
+  buttonGenerate.addEventListener("click", async (e) => {
+    e.preventDefault()
+    const colorsArray = getRandomColor()
+    const brandsArray = getRandomBrand()
+    const generatedCars = brandsArray.map((item, index) => {
+      return { name: item, color: colorsArray[index] }
+    })
+    const createdCars = await Promise.all(
+      generatedCars.map(async (item) => await createCar(item))
+    )
+    const newCars = await Promise.all(
+      createdCars.map(({ name, color, id }) => drawCar(name, color, id))
+    )
+    newCars.forEach((item) => wrapper.append(item))
+    totalCarsOnPage()
+  })
 }

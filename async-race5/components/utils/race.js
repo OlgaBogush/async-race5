@@ -12,6 +12,7 @@ import {
 export default async function race() {
   const buttonRace = document.querySelector(".button-race")
   const buttonReset = document.querySelector(".button-reset")
+  const buttonGenerate = document.querySelector(".button-generate")
 
   const array = []
 
@@ -19,6 +20,7 @@ export default async function race() {
   buttonRace.addEventListener("click", async (e) => {
     e.preventDefault()
     buttonRace.disabled = true
+    buttonGenerate.disabled = true
     buttonReset.disabled = false
 
     const cars = await getCars()
@@ -101,6 +103,7 @@ export default async function race() {
     e.preventDefault()
     buttonRace.disabled = false
     buttonReset.disabled = true
+    buttonGenerate.disabled = false
 
     console.log("array from reset", array)
     array.forEach(async (item) => {
