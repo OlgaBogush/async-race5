@@ -12,7 +12,6 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100vh;
 }
 /* header */
 header {
@@ -49,10 +48,10 @@ header {
 }
 
 .winners-page, .garage-page {
-  height: 85vh;
+  height: 120vh;
 }
 .winners-page {
-  margin-top: -80vh;
+  margin-top: -115vh;
 }
 .winners-page.hide {
   visibility: hidden;
