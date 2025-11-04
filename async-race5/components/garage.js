@@ -127,7 +127,7 @@ export default function createGarage() {
   const wrapper = document.createElement("div")
   wrapper.classList.add("wrapper")
 
-  const carsWrapper = createCars(res)
+  const carsWrapper = createCars(res, pageNumber)
   wrapper.innerHTML = ""
   wrapper.append(carsWrapper)
   container.append(wrapper)
@@ -156,7 +156,7 @@ export default function createGarage() {
     await createCar(car)
     const { totalCount, res } = await getCars(pageNumber)
     currentTotalCount = totalCount
-    const carsWrapper = createCars(res)
+    const carsWrapper = createCars(res, pageNumber)
     wrapper.innerHTML = ""
     wrapper.append(carsWrapper)
     totalCars.textContent = currentTotalCount
@@ -178,6 +178,7 @@ export default function createGarage() {
       await updateCar(carId, updateParams)
 
       const carSelected = document.getElementById(`${carId}`)
+      carSelected.dataset.name = inputTextUpdate.value
       const carItemSelected = carSelected.closest(".car-item")
       const carTitleSelected = carItemSelected.querySelector(".car-title")
       carTitleSelected.textContent = inputTextUpdate.value
@@ -310,7 +311,7 @@ export default function createGarage() {
     await Promise.all(generatedCars.map(async (item) => await createCar(item)))
     const { totalCount, res } = await getCars(pageNumber)
     currentTotalCount = totalCount
-    const carsWrapper = createCars(res)
+    const carsWrapper = createCars(res, pageNumber)
     wrapper.innerHTML = ""
     wrapper.append(carsWrapper)
     totalCars.textContent = currentTotalCount
@@ -324,15 +325,9 @@ export default function createGarage() {
     pageNumber += 1
     buttonNext.disabled = (pageNumber === Math.ceil(currentTotalCount / 7))
     buttonPrev.disabled = (pageNumber === 1)
-    // if (buttonPrev.disabled && pageNumber <= Math.ceil(currentTotalCount / 7)) {
-    //   buttonPrev.disabled = false
-    // }
-    // if (pageNumber === Math.ceil(currentTotalCount / 7)) {
-    //   buttonNext.disabled = true
-    // }
     const { res } = await getCars(pageNumber)
     counterPages.textContent = pageNumber
-    const carsWrapper = createCars(res)
+    const carsWrapper = createCars(res, pageNumber)
     wrapper.innerHTML = ""
     wrapper.append(carsWrapper)
   })
@@ -342,15 +337,9 @@ export default function createGarage() {
     pageNumber -= 1
     buttonNext.disabled = (pageNumber === Math.ceil(currentTotalCount / 7))
     buttonPrev.disabled = (pageNumber === 1)
-    // if (buttonNext.disabled && pageNumber < Math.ceil(currentTotalCount / 7)) {
-    //   buttonNext.disabled = false
-    // }
-    // if (pageNumber === 1) {
-    //   buttonPrev.disabled = true
-    // }
     const { res } = await getCars(pageNumber)
     counterPages.textContent = pageNumber
-    const carsWrapper = createCars(res)
+    const carsWrapper = createCars(res, pageNumber)
     wrapper.innerHTML = ""
     wrapper.append(carsWrapper)
   })

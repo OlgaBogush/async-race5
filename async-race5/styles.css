@@ -70,12 +70,6 @@ header {
   padding: 5px 10px;
   cursor: pointer;
 }
-.button-race:disabled {
-  cursor: default;
-}
-.button-reset:disabled {
-  cursor: default;
-}
 .controls {
   display: flex;
   flex-direction: column;
@@ -320,12 +314,14 @@ td {
 }
 
 /* pagination */
-.prev, .next {
+.prev, .next, .prev-win, .next-win {
   padding: 5px;
   margin: 20px 0;
   cursor: pointer;
 }
-.prev {
+.prev, .prev-win {
   margin-right: 10px;
 }
-
+button:disabled {
+  cursor: default;
+}

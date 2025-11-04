@@ -42,9 +42,6 @@ export default function createWinners() {
   rowTitle.append(titleNumber, titleCar, titleName, titleWins, titleTime)
   thead.append(rowTitle)
 
-  
-
-
 
   titleTime.addEventListener("click", async () => {
     const sortedTimeWinners = await getSortedTimeWinners()
@@ -56,8 +53,21 @@ export default function createWinners() {
     drawWinners(sortedWinsWinners)
   })
 
+   // pagination
+  const buttonPrev = document.createElement("button")
+  buttonPrev.classList.add("prev-win")
+  buttonPrev.textContent = "Prev"
+  const buttonNext = document.createElement("button")
+  buttonNext.classList.add("next-win")
+  buttonNext.textContent = "Next"
+  const paginationContainer = document.createElement("div")
+  paginationContainer.classList.add("pagination-container-win")
+  paginationContainer.append(buttonPrev, buttonNext)
+
+
   table.append(thead, tbody)
   container.append(table)
+  container.append(paginationContainer)
   main.append(container)
   document.body.append(main)
 

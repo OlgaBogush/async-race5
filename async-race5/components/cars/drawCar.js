@@ -2,8 +2,10 @@ import { deleteCar, deleteWinner, driveEngine, getCar, getCars, startEngine, sto
 import { winners } from "../winners.js"
 import createCars from "./createCars.js"
 
-export default function drawCar(name, color, id) {
+
+export default function drawCar(name, color, id, page) {
   let carId
+  let pageNumber = page
 
   // for carItem
   const carItem = document.createElement("div")
@@ -125,13 +127,20 @@ export default function drawCar(name, color, id) {
     carId = parseInt(e.target.id.split("-").at(-1))
     console.log("removing...", carId)
     await deleteCar(carId)
-    const { totalCount, res } = await getCars()
-    const carsWrapper = createCars(res)
+    const { totalCount, res } = await getCars(pageNumber)
+    
+    const carsWrapper = createCars(res, pageNumber)
     const wrapper = document.querySelector(".wrapper")
     wrapper.innerHTML = ""
     wrapper.append(carsWrapper)
     const totalCars = document.querySelector(".total-cars")
+    const counterPages = document.querySelector(".counter-pages")
     totalCars.textContent = totalCount
+    counterPages.textContent = pageNumber
+    const buttonNext = document.querySelector(".next")
+    const buttonPrev = document.querySelector(".prev")
+    buttonNext.disabled = (pageNumber === Math.ceil(totalCount / 7))
+    buttonPrev.disabled = (pageNumber === 1)
 
     let paneWinner = document.querySelector(`[data-winner-id="${carId}"]`)
     if (paneWinner) {
