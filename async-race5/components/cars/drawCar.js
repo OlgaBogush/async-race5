@@ -1,6 +1,6 @@
 import { deleteCar, deleteWinner, driveEngine, getCar, getCars, startEngine, stopEngine } from "../utils/async.js"
-import totalCarsOnPage from "../helpers/totalCarsOnPage.js"
 import { winners } from "../winners.js"
+import createCars from "./createCars.js"
 
 export default function drawCar(name, color, id) {
   let carId
@@ -75,45 +75,7 @@ export default function drawCar(name, color, id) {
   smallButtonRemove.textContent = "Remove"
   smallButtonRemove.id = `small-button-remove-${id}`
 
-  car.innerHTML = svgCar
-  car.append(fire)
-  carContainer.append(car, flag)
-  carButtons.append(smallButtonRace)
-  carButtons.append(smallButtonStop)
-  carButtons.append(smallButtonSelect)
-  carButtons.append(smallButtonRemove)
-  carItem.append(carTitle)
-  carItem.append(carContainer)
-  carItem.append(carButtons)
-
   // listeners
-  smallButtonRemove.addEventListener("click", async (e) => {
-    e.preventDefault()
-    carId = parseInt(e.target.id.split("-").at(-1))
-    console.log("removing...", carId)
-    await deleteCar(carId)
-    let pane = e.target.closest(".car-item")
-    pane.remove()
-    totalCarsOnPage()
-
-    let paneWinner = document.querySelector(`[data-winner-id="${carId}"]`)
-    if (paneWinner) {
-      await deleteWinner(carId)
-      await winners()
-    }
-  })
-
-  smallButtonSelect.addEventListener("click", async (e) => {
-    e.preventDefault()
-    carId = parseInt(e.target.id.split("-").at(-1))
-    const currentParams = await getCar(carId)
-    const inputTextUpdate = document.querySelector(".input-text-update")
-    const inputColorUpdate = document.querySelector(".input-color-update")
-    inputTextUpdate.value = currentParams.name
-    inputColorUpdate.value = currentParams.color
-    inputTextUpdate.dataset.selectedCarId = carId
-  })
-
   smallButtonRace.addEventListener("click", async (e) => {
     e.preventDefault()
     smallButtonRace.disabled = true
@@ -146,6 +108,48 @@ export default function drawCar(name, color, id) {
     fire.style.display = "none"
     await stopEngine(carId)
   })
+
+  smallButtonSelect.addEventListener("click", async (e) => {
+    e.preventDefault()
+    carId = parseInt(e.target.id.split("-").at(-1))
+    const currentParams = await getCar(carId)
+    const inputTextUpdate = document.querySelector(".input-text-update")
+    const inputColorUpdate = document.querySelector(".input-color-update")
+    inputTextUpdate.value = currentParams.name
+    inputColorUpdate.value = currentParams.color
+    inputTextUpdate.dataset.selectedCarId = carId
+  })
+
+  smallButtonRemove.addEventListener("click", async (e) => {
+    e.preventDefault()
+    carId = parseInt(e.target.id.split("-").at(-1))
+    console.log("removing...", carId)
+    await deleteCar(carId)
+    const { totalCount, res } = await getCars()
+    const carsWrapper = createCars(res)
+    const wrapper = document.querySelector(".wrapper")
+    wrapper.innerHTML = ""
+    wrapper.append(carsWrapper)
+    const totalCars = document.querySelector(".total-cars")
+    totalCars.textContent = totalCount
+
+    let paneWinner = document.querySelector(`[data-winner-id="${carId}"]`)
+    if (paneWinner) {
+      await deleteWinner(carId)
+      await winners()
+    }
+  })
+
+  car.innerHTML = svgCar
+  car.append(fire)
+  carContainer.append(car, flag)
+  carButtons.append(smallButtonRace)
+  carButtons.append(smallButtonStop)
+  carButtons.append(smallButtonSelect)
+  carButtons.append(smallButtonRemove)
+  carItem.append(carTitle)
+  carItem.append(carContainer)
+  carItem.append(carButtons)
 
   return carItem
 }

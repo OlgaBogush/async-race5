@@ -107,7 +107,7 @@ circle, path {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-top: 20px;
+  margin: 20px 0;
 }
 .car-title {
   padding-left: 10px;
@@ -318,5 +318,15 @@ td {
 }
 .title-wins:hover:after {
   background-color: black;
+}
+
+/* pagination */
+.prev, .next {
+  padding: 5px;
+  margin: 20px 0;
+  cursor: pointer;
+}
+.prev {
+  margin-right: 10px;
 }
 

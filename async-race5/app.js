@@ -4,7 +4,6 @@ import createHeader from "./components/header.js"
 import createWinners from "./components/winners.js"
 import router from "./components/router/router.js"
 import modal from "./components/modal.js"
-import race from "./components/utils/race.js"
 
 createHeader()
 createGarage()
@@ -12,7 +11,6 @@ createWinners()
 createFooter()
 modal()
 
-race()
 
 // SPA
 window.addEventListener("popstate", router)
@@ -31,3 +29,5 @@ function navigateTo(url) {
   history.pushState(null, null, url)
   router()
 }
+
+

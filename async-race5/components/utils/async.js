@@ -2,11 +2,15 @@ import stopAnimation from "../helpers/stopAnimation.js"
 
 const BASE_URL = "http://127.0.0.1:3000"
 
-export async function getCars() {
+export async function getCars(page = 1, limit = 7) {
   try {
-    const response = await fetch(`${BASE_URL}/garage`)
+    const response = await fetch(
+      `${BASE_URL}/garage?_page=${page}&_limit=${limit}`
+    )
+    const totalCount = response.headers.get("X-Total-Count")
     const res = await response.json()
-    return res
+    console.log("getCars", res)
+    return { totalCount, res }
   } catch (err) {
     throw new Error("Error")
   }

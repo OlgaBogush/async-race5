@@ -1,10 +1,25 @@
 import createCars from "./cars/createCars.js"
-import drawCar from "./cars/drawCar.js"
 import { getRandomBrand, getRandomColor } from "./helpers/randomCar.js"
-import totalCarsOnPage from "./helpers/totalCarsOnPage.js"
-import { createCar, getCars, updateCar } from "./utils/async.js"
+import {
+  createCar,
+  createWinner,
+  driveEngine,
+  getCars,
+  getWinner,
+  startEngine,
+  stopEngine,
+  updateCar,
+  updateWinner,
+} from "./utils/async.js"
+import { winners } from "./winners.js"
 
-const cars = await getCars()
+let pageNumber = 1
+const array = []
+let currentTotalCount
+
+const { totalCount, res } = await getCars()
+
+currentTotalCount = totalCount
 
 export default function createGarage() {
   const main = document.createElement("main")
@@ -85,18 +100,18 @@ export default function createGarage() {
   totalContainer.classList.add("total-container")
 
   const textPages = document.createElement("p")
-  textPages.innerText = "Pages: "
+  textPages.innerText = "Page: "
 
   const textCars = document.createElement("p")
   textCars.innerText = "Total: "
 
   const counterPages = document.createElement("span")
   counterPages.classList.add("counter-pages")
-  counterPages.innerText = "1"
+  counterPages.textContent = pageNumber
 
   const totalCars = document.createElement("span")
   totalCars.classList.add("total-cars")
-  totalCars.innerText = `${cars.length}`
+  totalCars.textContent = currentTotalCount
 
   textPages.append(counterPages)
   textCars.append(totalCars)
@@ -112,10 +127,24 @@ export default function createGarage() {
   const wrapper = document.createElement("div")
   wrapper.classList.add("wrapper")
 
-  const carsWrapper = createCars(cars)
+  const carsWrapper = createCars(res)
   wrapper.innerHTML = ""
   wrapper.append(carsWrapper)
   container.append(wrapper)
+
+  // pagination
+  const buttonPrev = document.createElement("button")
+  buttonPrev.classList.add("prev")
+  buttonPrev.textContent = "Prev"
+  const buttonNext = document.createElement("button")
+  buttonNext.classList.add("next")
+  buttonNext.textContent = "Next"
+  buttonNext.disabled = (pageNumber === Math.ceil(currentTotalCount / 7))
+  buttonPrev.disabled = (pageNumber === 1)
+  const paginationContainer = document.createElement("div")
+  paginationContainer.classList.add("pagination-container")
+  paginationContainer.append(buttonPrev, buttonNext)
+  container.append(paginationContainer)
 
   // listeners
   formCreate.addEventListener("submit", async (e) => {
@@ -124,10 +153,15 @@ export default function createGarage() {
       name: inputTextCreate.value,
       color: inputColorCreate.value,
     }
-    const { name, color, id } = await createCar(car)
-    const newCar = drawCar(name, color, id)
-    wrapper.append(newCar)
-    totalCarsOnPage()
+    await createCar(car)
+    const { totalCount, res } = await getCars(pageNumber)
+    currentTotalCount = totalCount
+    const carsWrapper = createCars(res)
+    wrapper.innerHTML = ""
+    wrapper.append(carsWrapper)
+    totalCars.textContent = currentTotalCount
+    buttonNext.disabled = (pageNumber === Math.ceil(currentTotalCount / 7))
+    buttonPrev.disabled = (pageNumber === 1)
   })
 
   formUpdate.addEventListener("submit", async (e) => {
@@ -165,6 +199,107 @@ export default function createGarage() {
     }
   })
 
+  // race
+  buttonRace.addEventListener("click", async (e) => {
+    e.preventDefault()
+    buttonRace.disabled = true
+    buttonGenerate.disabled = true
+    buttonReset.disabled = false
+
+    const { res } = await getCars(pageNumber)
+    array.length = 0
+    res.forEach((item) => array.push(item.id))
+
+    const startArray = await Promise.all(array.map((item) => startEngine(item)))
+    console.log("array from race", array)
+    startArray.forEach(({ id, res }) => {
+      const time = (res.distance / res.velocity / 1000).toFixed(2)
+      const carElement = document.getElementById(id)
+      carElement.dataset.time = time
+      carElement.style.animationName = "move"
+      carElement.style.animationDuration = `${time}s`
+      carElement.style.animationTimingFunction = "linear"
+      carElement.style.animationFillMode = "forwards"
+    })
+
+    // first
+    const first = await Promise.any(array.map((item) => driveEngine(item)))
+      .then((data) => data)
+      .catch((err) => {
+        console.log(err)
+      })
+
+    if (first) {
+      const carElementWin = document.getElementById(first.id)
+      const flagWin = carElementWin.nextElementSibling
+      flagWin.style.animationName = "shake"
+      flagWin.style.animationDuration = "0.5s"
+      flagWin.style.animationIterationCount = 1
+
+      const name = carElementWin.getAttribute("data-name")
+      const time = carElementWin.getAttribute("data-time")
+      const modal = document.querySelector(".modal")
+      const modalText = modal.querySelector(".modalText")
+      modalText.textContent = `${name} wins by ${time} s!`
+      modal.classList.add("show")
+      document.body.style.overflow = "hidden"
+      console.log("first", first)
+
+      const createWinnerParams = {
+        id: first.id,
+        wins: 1,
+        time: Number(time),
+      }
+
+      const winnersCollection = document.querySelectorAll(".row-car")
+
+      const isExists = Array.from(winnersCollection).find(
+        (item) => Number(item.dataset.winnerId) === first.id
+      )
+
+      if (!!isExists) {
+        const oldWinner = await getWinner(first.id)
+
+        const updateWinnerParams = {
+          wins: oldWinner.wins + 1,
+          time: Math.min(oldWinner.time, Number(time)),
+        }
+
+        await updateWinner(first.id, updateWinnerParams)
+        await winners()
+      } else {
+        await createWinner(createWinnerParams)
+        await winners()
+      }
+
+      // hide modal
+      modal.addEventListener("click", () => {
+        modal.classList.remove("show")
+        modalText.textContent = ""
+        document.body.style.overflow = ""
+      })
+    }
+  })
+
+  // reset
+  buttonReset.addEventListener("click", (e) => {
+    e.preventDefault()
+    buttonRace.disabled = false
+    buttonReset.disabled = true
+    buttonGenerate.disabled = false
+
+    console.log("array from reset", array)
+    array.forEach(async (item) => {
+      const carElement = document.getElementById(item)
+      if (carElement) {
+        const fire = document.getElementById(`fire-${item}`)
+        carElement.style.animation = ""
+        fire.style.display = "none"
+        await stopEngine(item)
+      }
+    })
+  })
+
   buttonGenerate.addEventListener("click", async (e) => {
     e.preventDefault()
     const colorsArray = getRandomColor()
@@ -172,13 +307,51 @@ export default function createGarage() {
     const generatedCars = brandsArray.map((item, index) => {
       return { name: item, color: colorsArray[index] }
     })
-    const createdCars = await Promise.all(
-      generatedCars.map(async (item) => await createCar(item))
-    )
-    const newCars = await Promise.all(
-      createdCars.map(({ name, color, id }) => drawCar(name, color, id))
-    )
-    newCars.forEach((item) => wrapper.append(item))
-    totalCarsOnPage()
+    await Promise.all(generatedCars.map(async (item) => await createCar(item)))
+    const { totalCount, res } = await getCars(pageNumber)
+    currentTotalCount = totalCount
+    const carsWrapper = createCars(res)
+    wrapper.innerHTML = ""
+    wrapper.append(carsWrapper)
+    totalCars.textContent = currentTotalCount
+    buttonNext.disabled = (pageNumber === Math.ceil(currentTotalCount / 7))
+    buttonPrev.disabled = (pageNumber === 1)
+  })
+
+  // paginnation
+  buttonNext.addEventListener("click", async (e) => {
+    e.preventDefault()
+    pageNumber += 1
+    buttonNext.disabled = (pageNumber === Math.ceil(currentTotalCount / 7))
+    buttonPrev.disabled = (pageNumber === 1)
+    // if (buttonPrev.disabled && pageNumber <= Math.ceil(currentTotalCount / 7)) {
+    //   buttonPrev.disabled = false
+    // }
+    // if (pageNumber === Math.ceil(currentTotalCount / 7)) {
+    //   buttonNext.disabled = true
+    // }
+    const { res } = await getCars(pageNumber)
+    counterPages.textContent = pageNumber
+    const carsWrapper = createCars(res)
+    wrapper.innerHTML = ""
+    wrapper.append(carsWrapper)
+  })
+
+  buttonPrev.addEventListener("click", async (e) => {
+    e.preventDefault()
+    pageNumber -= 1
+    buttonNext.disabled = (pageNumber === Math.ceil(currentTotalCount / 7))
+    buttonPrev.disabled = (pageNumber === 1)
+    // if (buttonNext.disabled && pageNumber < Math.ceil(currentTotalCount / 7)) {
+    //   buttonNext.disabled = false
+    // }
+    // if (pageNumber === 1) {
+    //   buttonPrev.disabled = true
+    // }
+    const { res } = await getCars(pageNumber)
+    counterPages.textContent = pageNumber
+    const carsWrapper = createCars(res)
+    wrapper.innerHTML = ""
+    wrapper.append(carsWrapper)
   })
 }
