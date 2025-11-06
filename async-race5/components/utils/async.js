@@ -131,11 +131,15 @@ export async function stopEngine(id) {
 }
 
 // winners
-export async function getWinners() {
+export async function getWinners(page = 1, limit = 5) {
   try {
-    const response = await fetch(`${BASE_URL}/winners`)
+    const response = await fetch(
+      `${BASE_URL}/winners?_page=${page}&_limit=${limit}`
+    )
+    const totalCount = response.headers.get("X-Total-Count")
     const res = await response.json()
-    return res
+    console.log("winners", res)
+    return { totalCount, res }
   } catch (err) {
     throw new Error("Error from getWinners")
   }
@@ -151,20 +155,26 @@ export async function getWinner(id) {
   }
 }
 
-export async function getSortedTimeWinners() {
+export async function getSortedTimeWinners(page = 1, limit = 5) {
   try {
-    const response = await fetch(`${BASE_URL}/winners?_sort=time`)
+    const response = await fetch(
+      `${BASE_URL}/winners?_sort=time&_page=${page}&_limit=${limit}`
+    )
     const res = await response.json()
+    console.log("from sorted by time", res)
     return res
   } catch (err) {
     throw new Error("Error from getSortedTimeWinners")
   }
 }
 
-export async function getSortedWinsWinners() {
+export async function getSortedWinsWinners(page = 1, limit = 5) {
   try {
-    const response = await fetch(`${BASE_URL}/winners?_sort=wins`)
+    const response = await fetch(
+      `${BASE_URL}/winners?_sort=wins&_page=${page}&_limit=${limit}`
+    )
     const res = await response.json()
+    console.log("from sorted by wins", res)
     return res
   } catch (err) {
     throw new Error("Error from getSortedWinsWinners")
@@ -208,7 +218,6 @@ export async function createWinner(winner) {
   }
 }
 
-
 export async function deleteWinner(id) {
   try {
     const response = await fetch(`${BASE_URL}/winners/${id}`, {
@@ -217,7 +226,7 @@ export async function deleteWinner(id) {
     const res = await response.json()
     return res
   } catch (err) {
-    console.log("не найдено");
+    console.log("не найдено")
     throw new Error("NOT FOUND")
   }
 }

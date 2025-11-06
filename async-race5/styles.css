@@ -86,9 +86,12 @@ header {
 }
 
 /* total */
-.total-container {
+.total-container, .total-container-win {
   display: flex;
   gap: 10px;
+}
+.total-container-win {
+  margin-bottom: 20px;
 }
 
 

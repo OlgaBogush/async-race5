@@ -1,7 +1,14 @@
-import { deleteCar, deleteWinner, driveEngine, getCar, getCars, startEngine, stopEngine } from "../utils/async.js"
-import { winners } from "../winners.js"
+import redrawWinners from "../helpers/redrawWinners.js"
+import {
+  deleteCar,
+  deleteWinner,
+  driveEngine,
+  getCar,
+  getCars,
+  startEngine,
+  stopEngine,
+} from "../utils/async.js"
 import createCars from "./createCars.js"
-
 
 export default function drawCar(name, color, id, page) {
   let carId
@@ -128,7 +135,7 @@ export default function drawCar(name, color, id, page) {
     console.log("removing...", carId)
     await deleteCar(carId)
     const { totalCount, res } = await getCars(pageNumber)
-    
+
     const carsWrapper = createCars(res, pageNumber)
     const wrapper = document.querySelector(".wrapper")
     wrapper.innerHTML = ""
@@ -139,13 +146,13 @@ export default function drawCar(name, color, id, page) {
     counterPages.textContent = pageNumber
     const buttonNext = document.querySelector(".next")
     const buttonPrev = document.querySelector(".prev")
-    buttonNext.disabled = (pageNumber === Math.ceil(totalCount / 7))
-    buttonPrev.disabled = (pageNumber === 1)
+    buttonNext.disabled = pageNumber === Math.ceil(totalCount / 7)
+    buttonPrev.disabled = pageNumber === 1
 
     let paneWinner = document.querySelector(`[data-winner-id="${carId}"]`)
     if (paneWinner) {
       await deleteWinner(carId)
-      await winners()
+      await redrawWinners()
     }
   })
 

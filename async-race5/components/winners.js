@@ -1,10 +1,18 @@
 import drawWinners from "./helpers/drawWinners.js"
-import { getSortedTimeWinners, getSortedWinsWinners, getWinners } from "./utils/async.js"
+import getFullInfoAboutCar from "./helpers/getFullInfoAboutCar.js"
+import {
+  getSortedTimeWinners,
+  getSortedWinsWinners,
+  getWinners,
+} from "./utils/async.js"
 
-export async function winners() {
-  const winnersArray = await getWinners()
-  drawWinners(winnersArray)
-}
+let pageNumber = 1
+let currentTotalCount
+
+const { totalCount, res } = await getWinners(pageNumber)
+const fullInfo = await getFullInfoAboutCar(res)
+
+currentTotalCount = totalCount
 
 export default function createWinners() {
   const main = document.createElement("main")
@@ -17,6 +25,28 @@ export default function createWinners() {
   const table = document.createElement("table")
   const thead = document.createElement("thead")
   const tbody = document.createElement("tbody")
+
+  // total
+  const totalContainer = document.createElement("div")
+  totalContainer.classList.add("total-container-win")
+
+  const textPages = document.createElement("p")
+  textPages.innerText = "Page: "
+
+  const textCars = document.createElement("p")
+  textCars.innerText = "Total: "
+
+  const counterPages = document.createElement("span")
+  counterPages.classList.add("counter-pages-win")
+  counterPages.textContent = pageNumber
+
+  const totalCars = document.createElement("span")
+  totalCars.classList.add("total-cars-win")
+  totalCars.textContent = currentTotalCount
+
+  textPages.append(counterPages)
+  textCars.append(totalCars)
+  totalContainer.append(textPages, textCars)
 
   // thead
   const rowTitle = document.createElement("tr")
@@ -42,18 +72,7 @@ export default function createWinners() {
   rowTitle.append(titleNumber, titleCar, titleName, titleWins, titleTime)
   thead.append(rowTitle)
 
-
-  titleTime.addEventListener("click", async () => {
-    const sortedTimeWinners = await getSortedTimeWinners()
-    drawWinners(sortedTimeWinners)
-  })
-
-  titleWins.addEventListener("click", async () => {
-    const sortedWinsWinners = await getSortedWinsWinners()
-    drawWinners(sortedWinsWinners)
-  })
-
-   // pagination
+  // pagination
   const buttonPrev = document.createElement("button")
   buttonPrev.classList.add("prev-win")
   buttonPrev.textContent = "Prev"
@@ -66,10 +85,25 @@ export default function createWinners() {
 
 
   table.append(thead, tbody)
-  container.append(table)
-  container.append(paginationContainer)
+  container.append(totalContainer, table, paginationContainer)
   main.append(container)
   document.body.append(main)
 
-  winners()
+  
+  drawWinners(fullInfo)
+
+
+
+   // listeners
+   titleTime.addEventListener("click", async () => {
+     const sortedTimeWinners = await getSortedTimeWinners(pageNumber, 5)
+     const fullInfo = await getFullInfoAboutCar(sortedTimeWinners)
+     drawWinners(fullInfo)
+   })
+
+  titleWins.addEventListener("click", async () => {
+    const sortedWinsWinners = await getSortedWinsWinners(pageNumber, 5)
+    const fullInfo = await getFullInfoAboutCar(sortedWinsWinners)
+    drawWinners(fullInfo)
+  })
 }

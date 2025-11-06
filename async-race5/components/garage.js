@@ -1,5 +1,6 @@
 import createCars from "./cars/createCars.js"
 import { getRandomBrand, getRandomColor } from "./helpers/randomCar.js"
+import redrawWinners from "./helpers/redrawWinners.js"
 import {
   createCar,
   createWinner,
@@ -11,7 +12,6 @@ import {
   updateCar,
   updateWinner,
 } from "./utils/async.js"
-import { winners } from "./winners.js"
 
 let pageNumber = 1
 const array = []
@@ -139,8 +139,8 @@ export default function createGarage() {
   const buttonNext = document.createElement("button")
   buttonNext.classList.add("next")
   buttonNext.textContent = "Next"
-  buttonNext.disabled = (pageNumber === Math.ceil(currentTotalCount / 7))
-  buttonPrev.disabled = (pageNumber === 1)
+  buttonNext.disabled = pageNumber === Math.ceil(currentTotalCount / 7)
+  buttonPrev.disabled = pageNumber === 1
   const paginationContainer = document.createElement("div")
   paginationContainer.classList.add("pagination-container")
   paginationContainer.append(buttonPrev, buttonNext)
@@ -160,8 +160,8 @@ export default function createGarage() {
     wrapper.innerHTML = ""
     wrapper.append(carsWrapper)
     totalCars.textContent = currentTotalCount
-    buttonNext.disabled = (pageNumber === Math.ceil(currentTotalCount / 7))
-    buttonPrev.disabled = (pageNumber === 1)
+    buttonNext.disabled = pageNumber === Math.ceil(currentTotalCount / 7)
+    buttonPrev.disabled = pageNumber === 1
   })
 
   formUpdate.addEventListener("submit", async (e) => {
@@ -197,6 +197,7 @@ export default function createGarage() {
           style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: ${inputColorUpdate.value}; fill-rule: nonzero; opacity: 1;"
           transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
       </g>`
+      await redrawWinners()
     }
   })
 
@@ -267,10 +268,10 @@ export default function createGarage() {
         }
 
         await updateWinner(first.id, updateWinnerParams)
-        await winners()
+        await redrawWinners()
       } else {
         await createWinner(createWinnerParams)
-        await winners()
+        await redrawWinners()
       }
 
       // hide modal
@@ -315,16 +316,16 @@ export default function createGarage() {
     wrapper.innerHTML = ""
     wrapper.append(carsWrapper)
     totalCars.textContent = currentTotalCount
-    buttonNext.disabled = (pageNumber === Math.ceil(currentTotalCount / 7))
-    buttonPrev.disabled = (pageNumber === 1)
+    buttonNext.disabled = pageNumber === Math.ceil(currentTotalCount / 7)
+    buttonPrev.disabled = pageNumber === 1
   })
 
   // paginnation
   buttonNext.addEventListener("click", async (e) => {
     e.preventDefault()
     pageNumber += 1
-    buttonNext.disabled = (pageNumber === Math.ceil(currentTotalCount / 7))
-    buttonPrev.disabled = (pageNumber === 1)
+    buttonNext.disabled = pageNumber === Math.ceil(currentTotalCount / 7)
+    buttonPrev.disabled = pageNumber === 1
     const { res } = await getCars(pageNumber)
     counterPages.textContent = pageNumber
     const carsWrapper = createCars(res, pageNumber)
@@ -335,8 +336,8 @@ export default function createGarage() {
   buttonPrev.addEventListener("click", async (e) => {
     e.preventDefault()
     pageNumber -= 1
-    buttonNext.disabled = (pageNumber === Math.ceil(currentTotalCount / 7))
-    buttonPrev.disabled = (pageNumber === 1)
+    buttonNext.disabled = pageNumber === Math.ceil(currentTotalCount / 7)
+    buttonPrev.disabled = pageNumber === 1
     const { res } = await getCars(pageNumber)
     counterPages.textContent = pageNumber
     const carsWrapper = createCars(res, pageNumber)
