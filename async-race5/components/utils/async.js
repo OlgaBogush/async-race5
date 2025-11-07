@@ -155,10 +155,10 @@ export async function getWinner(id) {
   }
 }
 
-export async function getSortedTimeWinners(page = 1, limit = 5) {
+export async function getSortedTimeWinners(page = 1, limit = 5, order) {
   try {
     const response = await fetch(
-      `${BASE_URL}/winners?_sort=time&_page=${page}&_limit=${limit}`
+      `${BASE_URL}/winners?_sort=time&_order=${order}&_page=${page}&_limit=${limit}`
     )
     const res = await response.json()
     console.log("from sorted by time", res)
@@ -168,10 +168,10 @@ export async function getSortedTimeWinners(page = 1, limit = 5) {
   }
 }
 
-export async function getSortedWinsWinners(page = 1, limit = 5) {
+export async function getSortedWinsWinners(page = 1, limit = 5, order) {
   try {
     const response = await fetch(
-      `${BASE_URL}/winners?_sort=wins&_page=${page}&_limit=${limit}`
+      `${BASE_URL}/winners?_sort=wins&_order=${order}&_page=${page}&_limit=${limit}`
     )
     const res = await response.json()
     console.log("from sorted by wins", res)

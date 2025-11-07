@@ -10,4 +10,12 @@ export default async function redrawWinners() {
   pageWin.textContent = 1
   const fullInfo = await getFullInfoAboutCar(res)
   drawWinners(fullInfo)
+
+  let pageNumber = 1
+  const buttonNext = document.querySelector(".next-win")
+  const buttonPrev = document.querySelector(".prev-win")
+  if (pageNumber === Math.ceil(totalCount / 5) || totalCount == 0) {
+    buttonNext.disabled = true
+  } else buttonNext.disabled = false
+  buttonPrev.disabled = pageNumber === 1
 }

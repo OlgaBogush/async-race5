@@ -7,12 +7,9 @@ import {
 } from "./utils/async.js"
 
 let pageNumber = 1
-let currentTotalCount
 
 const { totalCount, res } = await getWinners(pageNumber)
 const fullInfo = await getFullInfoAboutCar(res)
-
-currentTotalCount = totalCount
 
 export default function createWinners() {
   const main = document.createElement("main")
@@ -42,7 +39,7 @@ export default function createWinners() {
 
   const totalCars = document.createElement("span")
   totalCars.classList.add("total-cars-win")
-  totalCars.textContent = currentTotalCount
+  totalCars.textContent = totalCount
 
   textPages.append(counterPages)
   textCars.append(totalCars)
@@ -62,11 +59,11 @@ export default function createWinners() {
   titleName.textContent = "Name"
 
   const titleWins = document.createElement("th")
-  titleWins.classList.add("title-wins")
+  titleWins.classList.add("title-wins", "not-status")
   titleWins.textContent = "Wins"
 
   const titleTime = document.createElement("th")
-  titleTime.classList.add("title-time")
+  titleTime.classList.add("title-time", "not-status")
   titleTime.textContent = "Time"
 
   rowTitle.append(titleNumber, titleCar, titleName, titleWins, titleTime)
@@ -76,34 +73,182 @@ export default function createWinners() {
   const buttonPrev = document.createElement("button")
   buttonPrev.classList.add("prev-win")
   buttonPrev.textContent = "Prev"
+  buttonPrev.disabled = pageNumber === 1
   const buttonNext = document.createElement("button")
   buttonNext.classList.add("next-win")
   buttonNext.textContent = "Next"
+  if (pageNumber === Math.ceil(totalCount / 5) || totalCount == 0) {
+    buttonNext.disabled = true
+  } else buttonNext.disabled = false
   const paginationContainer = document.createElement("div")
   paginationContainer.classList.add("pagination-container-win")
   paginationContainer.append(buttonPrev, buttonNext)
-
 
   table.append(thead, tbody)
   container.append(totalContainer, table, paginationContainer)
   main.append(container)
   document.body.append(main)
 
-  
   drawWinners(fullInfo)
 
+  // listeners
+  titleTime.addEventListener("click", async () => {
+    if (titleWins.classList.contains("asc")) {
+      titleWins.classList.remove("asc")
+      titleWins.classList.add("not-status")
+    } else if (titleWins.classList.contains("desc")) {
+      titleWins.classList.remove("desc")
+      titleWins.classList.add("not-status")
+    }
 
-
-   // listeners
-   titleTime.addEventListener("click", async () => {
-     const sortedTimeWinners = await getSortedTimeWinners(pageNumber, 5)
-     const fullInfo = await getFullInfoAboutCar(sortedTimeWinners)
-     drawWinners(fullInfo)
-   })
+    if (titleTime.classList.contains("not-status")) {
+      titleTime.classList.remove("not-status")
+      titleTime.classList.add("asc")
+      const sortedTimeWinners = await getSortedTimeWinners(pageNumber, 5, "ASC")
+      const fullInfo = await getFullInfoAboutCar(sortedTimeWinners)
+      drawWinners(fullInfo)
+    } else if (titleTime.classList.contains("asc")) {
+      titleTime.classList.remove("asc")
+      titleTime.classList.add("desc")
+      const sortedTimeWinners = await getSortedTimeWinners(
+        pageNumber,
+        5,
+        "DESC"
+      )
+      const fullInfo = await getFullInfoAboutCar(sortedTimeWinners)
+      drawWinners(fullInfo)
+    } else if (titleTime.classList.contains("desc")) {
+      titleTime.classList.remove("desc")
+      titleTime.classList.add("asc")
+      const sortedTimeWinners = await getSortedTimeWinners(pageNumber, 5, "ASC")
+      const fullInfo = await getFullInfoAboutCar(sortedTimeWinners)
+      drawWinners(fullInfo)
+    }
+  })
 
   titleWins.addEventListener("click", async () => {
-    const sortedWinsWinners = await getSortedWinsWinners(pageNumber, 5)
-    const fullInfo = await getFullInfoAboutCar(sortedWinsWinners)
-    drawWinners(fullInfo)
+    if (titleTime.classList.contains("asc")) {
+      titleTime.classList.remove("asc")
+      titleTime.classList.add("not-status")
+    } else if (titleTime.classList.contains("desc")) {
+      titleTime.classList.remove("desc")
+      titleTime.classList.add("not-status")
+    }
+
+    if (titleWins.classList.contains("not-status")) {
+      titleWins.classList.remove("not-status")
+      titleWins.classList.add("asc")
+      const sortedWinsWinners = await getSortedWinsWinners(pageNumber, 5, "ASC")
+      const fullInfo = await getFullInfoAboutCar(sortedWinsWinners)
+      drawWinners(fullInfo)
+    } else if (titleWins.classList.contains("asc")) {
+      titleWins.classList.remove("asc")
+      titleWins.classList.add("desc")
+      const sortedWinsWinners = await getSortedWinsWinners(
+        pageNumber,
+        5,
+        "DESC"
+      )
+      const fullInfo = await getFullInfoAboutCar(sortedWinsWinners)
+      drawWinners(fullInfo)
+    } else if (titleWins.classList.contains("desc")) {
+      titleWins.classList.remove("desc")
+      titleWins.classList.add("asc")
+      const sortedWinsWinners = await getSortedWinsWinners(pageNumber, 5, "ASC")
+      const fullInfo = await getFullInfoAboutCar(sortedWinsWinners)
+      drawWinners(fullInfo)
+    }
+  })
+
+  buttonNext.addEventListener("click", async () => {
+    pageNumber += 1
+    counterPages.textContent = pageNumber
+
+    if (
+      titleWins.classList.contains("not-status") &&
+      titleTime.classList.contains("not-status")
+    ) {
+      const { res } = await getWinners(pageNumber)
+      const fullInfo = await getFullInfoAboutCar(res)
+      drawWinners(fullInfo)
+    }
+
+    //
+    if (titleWins.classList.contains("asc")) {
+      const sortedWinsWinners = await getSortedWinsWinners(pageNumber, 5, "ASC")
+      const fullInfo = await getFullInfoAboutCar(sortedWinsWinners)
+      drawWinners(fullInfo)
+    } else if (titleWins.classList.contains("desc")) {
+      const sortedWinsWinners = await getSortedWinsWinners(
+        pageNumber,
+        5,
+        "DESC"
+      )
+      const fullInfo = await getFullInfoAboutCar(sortedWinsWinners)
+      drawWinners(fullInfo)
+    } else if (titleTime.classList.contains("asc")) {
+      const sortedTimeWinners = await getSortedTimeWinners(pageNumber, 5, "ASC")
+      const fullInfo = await getFullInfoAboutCar(sortedTimeWinners)
+      drawWinners(fullInfo)
+    } else if (titleTime.classList.contains("desc")) {
+      const sortedTimeWinners = await getSortedTimeWinners(
+        pageNumber,
+        5,
+        "DESC"
+      )
+      const fullInfo = await getFullInfoAboutCar(sortedTimeWinners)
+      drawWinners(fullInfo)
+    }
+
+    if (pageNumber === Math.ceil(totalCount / 5) || totalCount == 0) {
+      buttonNext.disabled = true
+    } else buttonNext.disabled = false
+    buttonPrev.disabled = pageNumber === 1
+  })
+
+  buttonPrev.addEventListener("click", async () => {
+    pageNumber -= 1
+    counterPages.textContent = pageNumber
+
+    if (
+      titleWins.classList.contains("not-status") &&
+      titleTime.classList.contains("not-status")
+    ) {
+      const { res } = await getWinners(pageNumber)
+      const fullInfo = await getFullInfoAboutCar(res)
+      drawWinners(fullInfo)
+    }
+
+    //
+    if (titleWins.classList.contains("asc")) {
+      const sortedWinsWinners = await getSortedWinsWinners(pageNumber, 5, "ASC")
+      const fullInfo = await getFullInfoAboutCar(sortedWinsWinners)
+      drawWinners(fullInfo)
+    } else if (titleWins.classList.contains("desc")) {
+      const sortedWinsWinners = await getSortedWinsWinners(
+        pageNumber,
+        5,
+        "DESC"
+      )
+      const fullInfo = await getFullInfoAboutCar(sortedWinsWinners)
+      drawWinners(fullInfo)
+    } else if (titleTime.classList.contains("asc")) {
+      const sortedTimeWinners = await getSortedTimeWinners(pageNumber, 5, "ASC")
+      const fullInfo = await getFullInfoAboutCar(sortedTimeWinners)
+      drawWinners(fullInfo)
+    } else if (titleTime.classList.contains("desc")) {
+      const sortedTimeWinners = await getSortedTimeWinners(
+        pageNumber,
+        5,
+        "DESC"
+      )
+      const fullInfo = await getFullInfoAboutCar(sortedTimeWinners)
+      drawWinners(fullInfo)
+    }
+
+    if (pageNumber === Math.ceil(totalCount / 5) || totalCount == 0) {
+      buttonNext.disabled = true
+    } else buttonNext.disabled = false
+    buttonPrev.disabled = pageNumber === 1
   })
 }

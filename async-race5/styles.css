@@ -261,7 +261,6 @@ td {
   background-color: #616e74;
   top: 50%;
   right: 12px;
-  transform: rotate(-45deg);
 
   transition: background-color .2s linear;
 }
@@ -273,7 +272,6 @@ td {
   background-color: #616e74;
   top: 50%;
   right: 16px;
-  transform: rotate(45deg);
 
   transition: background-color .2s linear;
 }
@@ -293,7 +291,6 @@ td {
   background-color: #616e74;
   top: 50%;
   right: 12px;
-  transform: rotate(-45deg);
 
   transition: background-color .2s linear;
 }
@@ -305,7 +302,6 @@ td {
   background-color: #616e74;
   top: 50%;
   right: 16px;
-  transform: rotate(45deg);
 
   transition: background-color .2s linear;
 }
@@ -327,4 +323,32 @@ td {
 }
 button:disabled {
   cursor: default;
+}
+
+/* wins */
+.title-wins.asc:after {
+  transform: rotate(225deg);
+}
+.title-wins.asc:before {
+  transform: rotate(-225deg);
+}
+.title-wins.desc:after {
+  transform: rotate(-45deg);
+}
+.title-wins.desc:before {
+  transform: rotate(45deg);
+}
+
+/* time */
+.title-time.asc:after {
+  transform: rotate(225deg);
+}
+.title-time.asc:before {
+  transform: rotate(-225deg);
+}
+.title-time.desc:after {
+  transform: rotate(-45deg);
+}
+.title-time.desc:before {
+  transform: rotate(45deg);
 }

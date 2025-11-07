@@ -198,6 +198,9 @@ export default function createGarage() {
           transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
       </g>`
       await redrawWinners()
+      inputTextUpdate.removeAttribute("data-selected-car-id")
+      inputTextUpdate.value = ""
+      inputColorUpdate.value = "#000000"
     }
   })
 
